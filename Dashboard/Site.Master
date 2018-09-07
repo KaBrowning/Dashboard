@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title>Test Site</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -185,7 +185,7 @@ body {
 
        <div id="topheader">
         <div class="nav-side-menu">
-            <div class="brand">TANNER HEALTH SYSTEM</div>
+            <div class="brand">TEST SITE</div>
             <i class="fa fa=bars fa-2x toggle btn" data-toggle="collapse" data-target="#menu-content"></i>
             <div class="menu-list">
                 <ul id="menu-content" class="menu-content collapse out">
@@ -235,7 +235,7 @@ body {
                     <asp:ContentPlaceHolder ID="MainContent" runat="server">               
                         <hr />
                             <footer>
-                                <p>&copy; <%: DateTime.Now.Year %> - Tanner Health System</p>
+                                <p>&copy; <%: DateTime.Now.Year %></p>
                             </footer>               
                     </asp:ContentPlaceHolder>         
                 </div>
