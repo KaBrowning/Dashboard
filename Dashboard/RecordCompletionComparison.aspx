@@ -7,10 +7,11 @@
         google.charts.setOnLoadCallback(drawChartWithZeroValue1); //have to have 2 different methods in order to show 2 charts
         google.charts.setOnLoadCallback(drawChartWithZeroValue2);
 
+        //the starting chart for human secs per record where dial is set to 0
         function drawChartWithZeroValue1() {
             var data = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
-                ['Seconds', 0],
+                ['Seconds', 0]
             ]);
 
             var options = {
@@ -26,10 +27,31 @@
             chart.draw(data, options);       
         }
 
+        //the starting chart for script secs per record where dial is set to 0
         function drawChartWithZeroValue2() {
             var data = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
-                ['Seconds', 0],
+                ['Seconds', 0]
+            ]);
+
+            var options = {
+                width: 400, height: 300,
+                redFrom: 30, redTo: 100,
+                yellowFrom: 10, yellowTo: 30,
+                greenFrom: 0, greenTo: 10,
+                minorTicks: 5
+            };
+
+            var chart = new google.visualization.Gauge(document.getElementById('chart_div2'));
+            chart.draw(data, options);
+        }
+
+        //the updated chart for human secs per record that adjusts the dial to the value retrieved from the stored procedure
+        function drawChartWithHumanSecsPerRecord(humanSecs) {
+            var humanSecsInt = parseInt(humanSecs);
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['Seconds', humanSecsInt]
             ]);
 
             var options = {
@@ -40,34 +62,16 @@
                 minorTicks: 5
             };
 
-            var chart = new google.visualization.Gauge(document.getElementById('chart_div2'));
-
-            chart.draw(data, options);
-        }
-               
-        function drawChartWithHumanSecsPerRecord() {
-            var data = google.visualization.arrayToDataTable([
-                ['Label', 'Value'],
-                ['Seconds', <%=HumanSecsPerRecord%>],
-            ]);
-
-            var options = {
-                width: 400, height: 300,
-                redFrom: 30, redTo: 100,
-                yellowFrom: 10, yellowTo: 30,
-                greenFrom: 0, greenTo: 10,
-                minorTicks: 5
-            };
-
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
             chart.draw(data, options);
         }
 
-        function drawChartWithScriptSecsPerRecord() {
+        //the updated chart for script secs per record that adjusts the dial to the value retrieved from the stored procedure
+        function drawChartWithScriptSecsPerRecord(scriptSecs) {
+            var scriptSecsInt = parseInt(scriptSecs);
             var data = google.visualization.arrayToDataTable([
                 ['Label', 'Value'],
-                ['Seconds', <%=ScriptSecsPerRecord%>],
+                ['Seconds', scriptSecsInt]
             ]);
 
             var options = {
@@ -79,8 +83,7 @@
             };
 
             var chart = new google.visualization.Gauge(document.getElementById('chart_div2'));
-
-            chart.draw(data, options);
+            chart.draw(data, options);           
         }
     </script>
 
@@ -101,13 +104,17 @@
             color:inherit;
             background-color:#eeeeee;
         }
-        .sub-heading {
+        .main-content {
             display:inline-block; 
             margin-left: 1.5%;
         }
         .speedometer {
             margin-left:350px;
             margin-top:5%;
+        }
+        /*The google chart comes across as a table*/
+        table {
+            margin: 0 auto;
         }
 
     </style>
@@ -116,27 +123,27 @@
         <h2>Record Completion Comparison</h2>
     </div>
 
-    <div class="sub-heading"> 
+    <div class="main-content"> 
         <h3>Seconds Per Record</h3>
-        <p>Even though scripts follow the same process as a person to process records, the processing time is typically faster. 
+        <p>Even though scripts follow the same procedure as a person to process records, the processing time is typically faster. 
             The green sections represent the standard time established for each.
         </p>        
-
+    
         <div class="dropdownlist">
             <asp:Label runat="server" ID="lblNoRunningScripts"></asp:Label><br />
-            <asp:DropDownList ID="ddlScriptsRunning" runat="server" CssClass="ddl">
-            </asp:DropDownList>       
-            <asp:Button ID="btnViewComparison" runat="server" Text="View Comparison" CssClass="btn" OnClick="btnViewComparison_Click"/>        
+            <asp:DropDownList ID="ddlScriptsRunning" runat="server" CssClass="ddl" onselectedindexchanged="ViewComparison" AutoPostBack="true">
+            </asp:DropDownList>            
         </div>    
-
+    
         <div style="float:left; margin-left:15%; text-align: center;">
             <h3>Human Seconds per Record</h3>
-            <div id="chart_div" style="width: 400px; height: 300px;"></div>
+            <div id="chart_div"></div>
         </div>
 
         <div style="float:right; text-align: center;">
             <h3>Script Seconds per Record</h3>
-            <div id="chart_div2" style="width: 400px; height: 300px;"></div>
+            <div id="chart_div2"></div>
         </div>
     </div>
+    <div id="test"></div>
 </asp:Content>
